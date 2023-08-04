@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    username: ${DB.USERNAME}
+    password: ${DB.PASSWORD}
+    url: jdbc:${DB.TYPE}://${DB.IP}:${DB.PORT}/${DB.DATABASE}?useSSL=false&TimeZone=ShangHai&charset=utf8mb4
+  flyway:
+    enabled: true
+  config:
+    import: optional:file:../.env[.properties]
