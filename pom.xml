@@ -10,6 +10,7 @@
     <modules>
         <module>common</module>
         <module>service</module>
+        <module>infrastructure</module>
         <module>init</module>
     </modules>
     <name>redbook-back</name>
@@ -17,10 +18,10 @@
 
     <properties>
         <fastjson.version>2.0.21</fastjson.version>
-        <hutool-all.version>5.8.3</hutool-all.version>
+        <hutool-all.version>5.8.18</hutool-all.version>
         <java.version>17</java.version>
         <lombok.version>1.18.28</lombok.version>
-        <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.5.3.1</mybatis-plus-boot-starter.version>
         <nimbus-jose-jwt.version>9.30.2</nimbus-jose-jwt.version>
         <slf4j-parent.version>2.0.7</slf4j-parent.version>
         <spring-boot-dependencies.version>3.1.2</spring-boot-dependencies.version>
