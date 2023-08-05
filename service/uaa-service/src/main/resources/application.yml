@@ -1,5 +1,5 @@
 server:
-  port: 5320
+  port: 8090
   servlet:
     encoding:
       enabled: true
@@ -10,15 +10,6 @@ spring:
     import: optional:file:.env[.properties]
   application:
     name: uaa-service
-  cloud:
-    nacos:
-      discovery:
-        server-addr: ${NACOS.ADDR}:8848
-      config:
-        server-addr: ${NACOS.ADDR}:8848
-        file-extension: yaml
-  main:
-    allow-bean-definition-overriding: true
   datasource:
     username: ${DB.USERNAME}
     password: ${DB.PASSWORD}
