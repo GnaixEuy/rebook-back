@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,7 +30,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysUserEntity sysUserEntity = this.sysUserService.selectByUsername(username);
+
+        SysUserEntity sysUserEntity = sysUserService.selectByUsername(username);
+        if (Objects.isNull(sysUserEntity)) {
+            throw new UsernameNotFoundException("用户不存在！");
+        }
         List<SimpleGrantedAuthority> grantedAuthorityList = Stream.of("USER").map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         return new User(username, sysUserEntity.getPassword(), grantedAuthorityList);
     }

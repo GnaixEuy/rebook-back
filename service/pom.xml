@@ -18,6 +18,7 @@
 
     <modules>
         <module>uaa-service</module>
+        <module>test-service</module>
     </modules>
 
     <dependencies>

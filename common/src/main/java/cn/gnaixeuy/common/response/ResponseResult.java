@@ -1,104 +1,162 @@
 package cn.gnaixeuy.common.response;
 
-import cn.gnaixeuy.common.enmus.CodeEnum;
-import com.alibaba.nacos.api.model.v2.Result;
-import lombok.AllArgsConstructor;
+import cn.gnaixeuy.common.enmus.ResultCodeEnum;
+import com.alibaba.nacos.shaded.com.google.gson.Gson;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.apache.commons.codec.Charsets;
+import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 
-import java.io.Serializable;
+import javax.security.sasl.AuthenticationException;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 /**
  * <img src="https://img1.baidu.com/it/u=2537966709,2852517020&fm=253&fmt=auto&app=138&f=JPEG?w=648&h=489"/>
  * redbook-back
- * 统一返回格式
  *
  * @author GnaixEuy
  * @version 1.0
  * @see <a href="https://github.com/GnaixEuy">GnaixEuy</a>
  */
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ResponseResult<T> implements Serializable {
-    // 处理的数据
-    private T data;
-    // 返回的结果编码
+public class ResponseResult<T> {
+
+    /**
+     * 状态码
+     */
     private Integer code;
-    // 返回的结果信息
-    private String msg;
+    /**
+     * 返回信息
+     */
+    private String message;
+    /**
+     * 数据
+     */
+    private T data;
 
-    // 执行成功，返回的信息
-    public static <T> Result<T> succeed(String msg) {
-        return succeedWith(null, CodeEnum.SUCCESS.getCode(), msg);
+    private ResponseResult() {
     }
 
-    public static <T> Result<T> succeed(T model, String msg) {
-        return succeedWith(model, CodeEnum.SUCCESS.getCode(), msg);
+
+    /**
+     * @param body
+     * @param resultCodeEnum
+     * @param <T>
+     * @return
+     * @author Rommel
+     * @date 2023/7/31-10:46
+     * @version 1.0
+     * @description 构造返回结果
+     */
+    public static <T> ResponseResult<T> build(T body, ResultCodeEnum resultCodeEnum) {
+        ResponseResult<T> result = new ResponseResult<>();
+        //封装数据
+        if (body != null) {
+            result.setData(body);
+        }
+        //状态码
+        result.setCode(resultCodeEnum.getCode());
+        //返回信息
+        result.setMessage(resultCodeEnum.getMsg());
+        return result;
     }
 
-    public static <T> Result<T> succeed(T model) {
-        return succeedWith(model, CodeEnum.SUCCESS.getCode(), "");
+
+    /**
+     * @param <T>
+     * @return
+     * @author Rommel
+     * @date 2023/7/31-10:45
+     * @version 1.0
+     * @description 成功-无参
+     */
+    public static <T> ResponseResult<T> ok() {
+        return build(null, ResultCodeEnum.SUCCESS);
     }
 
-    public static <T> Result<T> succeedWith(T datas, Integer code, String msg) {
-        return new Result<>(code, msg, datas);
+
+    /**
+     * @param data
+     * @param <T>
+     * @return
+     * @author Rommel
+     * @date 2023/7/31-10:45
+     * @version 1.0
+     * @description 成功-有参
+     */
+    public static <T> ResponseResult<T> ok(T data) {
+        return build(data, ResultCodeEnum.SUCCESS);
     }
 
-    // 执行失败，返回的信息
-    public static <T> Result<T> failed(String msg) {
-        return failedWith(null, CodeEnum.FAIL.getCode(), msg);
+    /**
+     * @param <T>
+     * @return
+     * @author Rommel
+     * @date 2023/7/31-10:45
+     * @version 1.0
+     * @description 失败-无参
+     */
+    public static <T> ResponseResult<T> fail() {
+        return build(null, ResultCodeEnum.FAIL);
     }
 
-    public static <T> Result<T> failed(T model, String msg) {
-        return failedWith(model, CodeEnum.FAIL.getCode(), msg);
+    /**
+     * @param data
+     * @param <T>
+     * @return
+     * @author Rommel
+     * @date 2023/7/31-10:45
+     * @version 1.0
+     * @description 失败-有参
+     */
+    public static <T> ResponseResult<T> fail(T data) {
+        return build(data, ResultCodeEnum.FAIL);
     }
 
-    public static <T> Result<T> failedWith(T datas, Integer code, String msg) {
-        return new Result<>(code, msg, datas);
+    /**
+     * @param response
+     * @param e
+     * @throws IOException
+     * @author Rommel
+     * @date 2023/7/31-10:45
+     * @version 1.0
+     * @description 异常响应
+     */
+    public static void exceptionResponse(HttpServletResponse response, Exception e) throws AccessDeniedException, AuthenticationException, IOException {
+
+        String message = null;
+        if (e instanceof OAuth2AuthenticationException o) {
+            message = o.getError().getDescription();
+        } else {
+            message = e.getMessage();
+        }
+        exceptionResponse(response, message);
     }
 
-    // 执行异常，返回的消息
-    public static <T> Result<T> error(String msg) {
-        return errorWith(null, CodeEnum.ERROR.getCode(), msg);
+
+    public static void exceptionResponse(HttpServletResponse response, String message) throws AccessDeniedException, AuthenticationException, IOException {
+
+        ResponseResult<String> responseResult = ResponseResult.fail(message);
+        Gson gson = new Gson();
+        String jsonResult = gson.toJson(responseResult);
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(Charsets.UTF_8.name());
+        response.getWriter().print(jsonResult);
+
     }
 
-    public static <T> Result<T> error(T model, String msg) {
-        return errorWith(model, CodeEnum.ERROR.getCode(), msg);
+    public ResponseResult<T> message(String msg) {
+        this.setMessage(msg);
+        return this;
     }
 
-    public static <T> Result<T> errorWith(T datas, Integer code, String msg) {
-        return new Result<>(code, msg, datas);
-    }
-
-    // 警告信息
-    public static <T> Result<T> warn(String msg) {
-        return warnWith(null, CodeEnum.WARN.getCode(), msg);
-    }
-
-    public static <T> Result<T> warn(T model, String msg) {
-        return warnWith(model, CodeEnum.WARN.getCode(), msg);
-    }
-
-    public static <T> Result<T> warnWith(T datas, Integer code, String msg) {
-        return new Result<>(code, msg, datas);
-    }
-
-    public Boolean isSuccess() {
-        return CodeEnum.SUCCESS.getCode().equals(this.code);
-    }
-
-    // 判断执行结果
-    public Boolean isFailed() {
-        return CodeEnum.FAIL.getCode().equals(this.code);
-    }
-
-    public Boolean isError() {
-        return CodeEnum.ERROR.getCode().equals(this.code);
-    }
-
-    public Boolean isWarn() {
-        return CodeEnum.WARN.getCode().equals(this.code);
+    public ResponseResult<T> code(Integer code) {
+        this.setCode(code);
+        return this;
     }
 
 }
