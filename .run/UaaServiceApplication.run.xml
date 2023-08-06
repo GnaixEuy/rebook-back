@@ -3,6 +3,12 @@
                    factoryName="Spring Boot" folderName="services" nameIsGenerated="true">
         <module name="uaa-service"/>
         <option name="SPRING_BOOT_MAIN_CLASS" value="cn.gnaixeuy.uaaservice.UaaServiceApplication"/>
+        <extension name="coverage">
+            <pattern>
+                <option name="PATTERN" value="cn.gnaixeuy.uaaservice.*"/>
+                <option name="ENABLED" value="true"/>
+            </pattern>
+        </extension>
         <extension name="net.ashald.envfile">
             <option name="IS_ENABLED" value="false"/>
             <option name="IS_SUBST" value="false"/>

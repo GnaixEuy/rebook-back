@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 9000
   servlet:
     encoding:
       enabled: true
@@ -18,4 +18,6 @@ spring:
     redis:
       host: ${REDIS.HOST}
       port: ${REDIS.PORT}
-
+logging:
+  level:
+    org.springframework.security: trace
