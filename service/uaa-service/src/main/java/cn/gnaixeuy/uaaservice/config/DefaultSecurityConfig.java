@@ -32,23 +32,13 @@ public class DefaultSecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
-//        http
-//                //设置所有请求都需要认证，未认证的请求都被重定向到login页面进行登录
-//                .authorizeHttpRequests((authorize) -> authorize
-//                        .anyRequest().authenticated()
-//                )
-//                // 由Spring Security过滤链中UsernamePasswordAuthenticationFilter过滤器拦截处理“login”页面提交的登录信息。
-//                .formLogin(Customizer.withDefaults());
         http
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/assets/**", "/webjars/**", "/login").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/login")
-                );
+                .formLogin(formLogin -> formLogin.loginPage("/login"));
         http
                 .oauth2ResourceServer((resourceServer) -> resourceServer
                         .jwt(Customizer.withDefaults())

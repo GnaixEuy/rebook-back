@@ -1,6 +1,5 @@
 package cn.gnaixeuy.uaaservice.config;
 
-
 import cn.gnaixeuy.uaaservice.authentication.device.DeviceClientAuthenticationConverter;
 import cn.gnaixeuy.uaaservice.authentication.device.DeviceClientAuthenticationProvider;
 import cn.gnaixeuy.uaaservice.authentication.mobile.MobileGrantAuthenticationConverter;
@@ -115,7 +114,6 @@ public class AuthorizationServerConfig {
         //AuthenticationProvider(主处理器)，用于验证OAuth2ClientAuthenticationToken。
         DeviceClientAuthenticationProvider deviceClientAuthenticationProvider =
                 new DeviceClientAuthenticationProvider(registeredClientRepository);
-
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .deviceAuthorizationEndpoint(deviceAuthorizationEndpoint ->
                         //设置用户码校验地址
@@ -172,7 +170,6 @@ public class AuthorizationServerConfig {
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(Customizer.withDefaults()));
-
         return http.build();
     }
 
@@ -239,7 +236,10 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         //什么都不配置，则使用默认地址
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder()
+                //TODO 临时使用
+                .issuer("http://localhost:9000")
+                .build();
     }
 
     /**
@@ -256,8 +256,8 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(MyOidcUserInfoService myOidcUserInfoService) {
-
+    public OAuth2TokenCustomizer<JwtEncodingContext>
+    jwtCustomizer(MyOidcUserInfoService myOidcUserInfoService) {
         return context -> {
             JwsHeader.Builder headers = context.getJwsHeader();
             JwtClaimsSet.Builder claims = context.getClaims();
