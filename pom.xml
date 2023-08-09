@@ -17,13 +17,12 @@
     <description>redbook-back</description>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-
         <fastjson.version>2.0.21</fastjson.version>
         <hutool-all.version>5.8.21</hutool-all.version>
         <java.version>17</java.version>
         <lombok.version>1.18.28</lombok.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <mybatis-plus-boot-starter.version>3.5.3.1</mybatis-plus-boot-starter.version>
         <nimbus-jose-jwt.version>9.30.2</nimbus-jose-jwt.version>
         <slf4j-parent.version>2.0.7</slf4j-parent.version>

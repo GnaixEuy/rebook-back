@@ -19,6 +19,7 @@
     <modules>
         <module>uaa-service</module>
         <module>hello-service</module>
+        <module>note-service</module>
     </modules>
 
     <dependencies>

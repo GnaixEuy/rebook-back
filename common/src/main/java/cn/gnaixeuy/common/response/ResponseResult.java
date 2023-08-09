@@ -31,7 +31,7 @@ public class ResponseResult<T> {
     /**
      * 返回信息
      */
-    private String message;
+    private String msg;
     /**
      * 数据
      */
@@ -60,7 +60,7 @@ public class ResponseResult<T> {
         //状态码
         result.setCode(resultCodeEnum.getCode());
         //返回信息
-        result.setMessage(resultCodeEnum.getMsg());
+        result.setMsg(resultCodeEnum.getMsg());
         return result;
     }
 
@@ -150,7 +150,7 @@ public class ResponseResult<T> {
     }
 
     public ResponseResult<T> message(String msg) {
-        this.setMessage(msg);
+        this.setMsg(msg);
         return this;
     }
 

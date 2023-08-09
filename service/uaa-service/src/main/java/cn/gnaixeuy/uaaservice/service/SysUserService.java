@@ -17,7 +17,7 @@ public interface SysUserService extends IService<SysUserEntity> {
     /**
      * @param username
      * @return
-     * @author Rommel
+     * @author GnaxiEuy
      * @date 2023/7/12-23:48
      * @version 1.0
      * @description 根据用户名查询用户信息
