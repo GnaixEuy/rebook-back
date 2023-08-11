@@ -1,0 +1,14 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  config:
+    import: optional:file:.env.dev[.properties]
+  cloud:
+    polaris:
+      address: grpc://${POLARIS.ADDR:localhost}:${POLARIS.PORT:8091}
+      config:
+        address: grpc://${POLARIS.ADDR:localhost}:${POLARIS.PORT:8091}
+      namespace: default
+      enabled: true

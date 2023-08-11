@@ -7,17 +7,17 @@ server:
       force: true
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:.env.dev[.properties]
   application:
     name: uaa-service
   datasource:
-    username: ${DB.USERNAME}
-    password: ${DB.PASSWORD}
-    url: jdbc:${DB.TYPE}://${DB.IP}:${DB.PORT}/${DB.DATABASE}?useSSL=false&serverTimezone=UTC&charset=utf8mb4
+    username: ${DB.USERNAME:root}
+    password: ${DB.PASSWORD:123456}
+    url: jdbc:${DB.TYPE:mysql}://${DB.IP:localhost}:${DB.PORT:3306}/${DB.DATABASE:redbook}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&charset=utf8mb4
   data:
     redis:
-      host: ${REDIS.HOST}
-      port: ${REDIS.PORT}
+      host: ${REDIS.HOST:localhost}
+      port: ${REDIS.PORT:6379}
 logging:
   level:
     org.springframework.security: trace

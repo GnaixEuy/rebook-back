@@ -1,7 +1,7 @@
 package cn.gnaixeuy.common.response;
 
 import cn.gnaixeuy.common.enmus.ResultCodeEnum;
-import com.alibaba.nacos.shaded.com.google.gson.Gson;
+import cn.hutool.json.JSONUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import org.apache.commons.codec.Charsets;
@@ -140,8 +140,7 @@ public class ResponseResult<T> {
     public static void exceptionResponse(HttpServletResponse response, String message) throws AccessDeniedException, AuthenticationException, IOException {
 
         ResponseResult<String> responseResult = ResponseResult.fail(message);
-        Gson gson = new Gson();
-        String jsonResult = gson.toJson(responseResult);
+        String jsonResult = JSONUtil.toJsonStr(responseResult);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(Charsets.UTF_8.name());

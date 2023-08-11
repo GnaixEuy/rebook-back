@@ -1,0 +1,11 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  config:
+    import: optional:file:.env.dev[.properties]
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS.ADDR:localhost}:${NACOS:PORT:8848}

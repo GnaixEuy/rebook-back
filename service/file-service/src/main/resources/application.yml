@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 9030
   servlet:
     encoding:
       enabled: true
@@ -9,7 +9,7 @@ spring:
   config:
     import: optional:file:.env.dev[.properties]
   application:
-    name: note-service
+    name: file-service
   datasource:
     username: ${DB.USERNAME:root}
     password: ${DB.PASSWORD:123456}
